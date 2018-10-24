@@ -1,5 +1,6 @@
 package com.chrisnevers.textbooks;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,17 +12,14 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-public class MainActivity extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "SignupActivity";
 
     TextView etUsername, etEmail, etPassword;
     Button btLogin;
@@ -31,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_signup);
 
         auth = FirebaseAuth.getInstance();
 
@@ -59,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                             // If sign in fails, display a message to the user.
                             String msg = task.getException().getMessage();
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed: " + msg,
+                            Toast.makeText(SignupActivity.this, "Authentication failed: " + msg,
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -71,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         final String name     = etUsername.getText().toString();
         final String email    = etEmail.getText().toString();
         final String password = etPassword.getText().toString();
-        Toast.makeText(MainActivity.this, "Name: " + name, Toast.LENGTH_SHORT).show();
+        Toast.makeText(SignupActivity.this, "Name: " + name, Toast.LENGTH_SHORT).show();
 
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -94,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                         // If sign in fails, display a message to the user.
                         String msg = task.getException().getMessage();
                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                        Toast.makeText(MainActivity.this, "Authentication failed: " + msg,
+                        Toast.makeText(SignupActivity.this, "Authentication failed: " + msg,
                                 Toast.LENGTH_SHORT).show();
                         updateUI(null);
                     }
@@ -108,8 +106,14 @@ public class MainActivity extends AppCompatActivity {
         } else {
             String name = user.getDisplayName();
             String email = user.getEmail();
-            Toast.makeText(MainActivity.this, "Welcome " + name + " : " + email, Toast.LENGTH_LONG).show();
+            Toast.makeText(SignupActivity.this, "Welcome " + name + " : " + email, Toast.LENGTH_LONG).show();
+            setContentView(R.layout.activity_browse);
         }
+    }
+
+    public void goToLogin (View v) {
+        Intent myIntent = new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(myIntent);
     }
 
 }

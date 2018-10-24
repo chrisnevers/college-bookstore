@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    tools:context=".MainActivity">
+    tools:context=".LoginActivity">
 
     <LinearLayout
         android:layout_width="336dp"
@@ -32,17 +31,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/etUsername"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_centerHorizontal="true"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="Name"
-                android:inputType="textPersonName" />
+            android:orientation="vertical"
+            android:gravity="center">
 
             <EditText
                 android:id="@+id/etEmail"
@@ -64,6 +54,17 @@
                 android:hint="Password"
                 android:inputType="textPassword" />
 
+            <TextView
+                android:id="@+id/btSignup"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:onClick="goToSignup"
+                android:text="Register Here" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -80,8 +81,8 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:background="@color/primaryComplement"
-                android:onClick="signUpUser"
-                android:text="Sign Up" />
+                android:onClick="loginUser"
+                android:text="Login" />
         </LinearLayout>
 
     </LinearLayout>
