@@ -69,7 +69,8 @@ public class LoginActivity extends AppCompatActivity {
             String name = user.getDisplayName();
             String email = user.getEmail();
             Toast.makeText(LoginActivity.this, "Welcome " + name + " : " + email, Toast.LENGTH_LONG).show();
-            setContentView(R.layout.activity_browse);
+            Intent myIntent = new Intent(this, BrowseActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(myIntent);
         }
     }
 

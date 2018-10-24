@@ -1,29 +1,45 @@
 package com.chrisnevers.textbooks;
 
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.os.Bundle;
+import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class BrowseActivity extends AppCompatActivity {
+
+    TextView mTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        mTextView = (TextView) findViewById(R.id.browseText);
+        mTextView.setText("initializing");
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("textbooks")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            StringBuilder s = new StringBuilder();
+                            for (DocumentSnapshot document : task.getResult()) {
+                                s.append(document.getId());
+                                s.append(" : ");
+                                s.append(document.getData().toString());
+                            }
+                            mTextView.setText(s.toString());
+                        } else {
+                            mTextView.setText("reading failed");
+                        }
+                    }
+                });
     }
 
 }
