@@ -68,11 +68,12 @@ public class BrowseActivity extends AppCompatActivity {
     }
 
 
-    private void setOnClick(final Button btn, final String str){
+    private void setOnClick(final Button btn, final String isbn){
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(getApplicationContext(), InventoryActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                myIntent.putExtra("isbn", isbn);
                 startActivity(myIntent);
             }
         });
