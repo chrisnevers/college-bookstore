@@ -19,7 +19,8 @@
         </activity>
         <activity android:name=".SignupActivity" />
         <activity android:name=".BrowseActivity" />
-        <activity android:name=".InventoryActivity"></activity>
+        <activity android:name=".InventoryActivity" />
+        <activity android:name=".SellActivity"></activity>
     </application>
 
 </manifest>

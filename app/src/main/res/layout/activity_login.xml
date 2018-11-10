@@ -42,7 +42,8 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="Email"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:text="test@gmail.com"/>
 
             <EditText
                 android:id="@+id/etPassword"
@@ -52,7 +53,8 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="Password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:text="password"/>
 
             <TextView
                 android:id="@+id/btSignup"
