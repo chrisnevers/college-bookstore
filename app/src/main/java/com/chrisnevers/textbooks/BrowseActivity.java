@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,26 +28,27 @@ public class BrowseActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        LinearLayout wrapper = (LinearLayout) findViewById(R.id.browse_wrapper);
                         if (task.isSuccessful()) {
-                            LinearLayout wrapper = (LinearLayout) findViewById(R.id.browse_wrapper);
-                            for (DocumentSnapshot document : task.getResult()) {
-                                LinearLayout bookL = new LinearLayout(getApplicationContext());
-                                bookL.setOrientation(LinearLayout.VERTICAL);
-                                final String isbn = document.getId();
-                                TextView isbnTV = createTextView(isbn);
-                                TextView authorTV = createTextView(document.getData().get("author").toString());
-                                TextView nameTV = createTextView(document.getData().get("name").toString());
-                                Button btn = new Button(getApplicationContext());
-                                btn.setText("Buy Now");
-                                setOnClick(btn, isbn);
-                                bookL.addView(isbnTV);
-                                bookL.addView(authorTV);
-                                bookL.addView(nameTV);
-                                bookL.addView(btn);
-                                wrapper.addView(bookL);
+                            for (int i = 0; i < 10; i++) {
+                                for (DocumentSnapshot document : task.getResult()) {
+                                    LinearLayout bookL = new LinearLayout(getApplicationContext());
+                                    bookL.setOrientation(LinearLayout.VERTICAL);
+                                    final String isbn = document.getId();
+                                    TextView isbnTV = createTextView(isbn);
+                                    TextView authorTV = createTextView(document.getData().get("author").toString());
+                                    TextView nameTV = createTextView(document.getData().get("name").toString());
+                                    Button btn = new Button(getApplicationContext());
+                                    btn.setText("Buy Now");
+                                    setOnClick(btn, isbn);
+                                    bookL.addView(isbnTV);
+                                    bookL.addView(authorTV);
+                                    bookL.addView(nameTV);
+                                    bookL.addView(btn);
+                                    wrapper.addView(bookL);
+                                }
                             }
                         } else {
-                            LinearLayout wrapper = (LinearLayout) findViewById(R.id.browse_wrapper);
                             TextView tv = new TextView(getApplicationContext());
                             tv.setText("Failed to load books");
                             wrapper.addView(tv);
@@ -77,5 +77,10 @@ public class BrowseActivity extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
+    }
+
+    protected void sellBook (View v) {
+        Intent myIntent = new Intent(getApplicationContext(), SellActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(myIntent);
     }
 }
