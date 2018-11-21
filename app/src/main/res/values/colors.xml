@@ -2,6 +2,7 @@
 <resources>
     <color name="colorPrimary">#487e97</color>
     <color name="primaryComplement">#f2da88</color>
+    <color name="bookRed">#f65633</color>
     <color name="colorBackground">#f7f7f7</color>
     <color name="bookColor">#98d3ff</color>
     <color name="colorPrimaryDark">#000000</color>

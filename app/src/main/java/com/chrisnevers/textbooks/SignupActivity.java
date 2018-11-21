@@ -80,7 +80,7 @@ public class SignupActivity extends AppCompatActivity {
                         Log.d(TAG, "createUserWithEmail:success");
                         final FirebaseUser user = auth.getCurrentUser();
                         UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-                            .setDisplayName(name).build();
+                                .setDisplayName(name).build();
 
                         user.updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override

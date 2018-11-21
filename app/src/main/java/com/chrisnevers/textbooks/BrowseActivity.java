@@ -5,10 +5,13 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -40,6 +43,7 @@ public class BrowseActivity extends AppCompatActivity {
                                     TextView nameTV = createTextView(document.getData().get("name").toString());
                                     Button btn = new Button(getApplicationContext());
                                     btn.setText("Buy Now");
+                                    btn.setBackgroundColor(getResources().getColor(R.color.primaryComplement));
                                     setOnClick(btn, isbn);
                                     bookL.addView(isbnTV);
                                     bookL.addView(authorTV);
@@ -55,6 +59,34 @@ public class BrowseActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.browse_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Toast.makeText(this, "Selected Item: " +item.getTitle(), Toast.LENGTH_SHORT).show();
+        switch (item.getItemId()) {
+            case R.id.goto_profile: {
+                Intent myIntent = new Intent(getApplicationContext(), ProfileActivity.class)
+                        .addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(myIntent);
+                return true;
+            }
+            case R.id.goto_sell: {
+                Intent myIntent = new Intent(getApplicationContext(), SellActivity.class)
+                                        .addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(myIntent);
+                return true;
+            }
+            default: {
+                return super.onOptionsItemSelected(item);
+            }
+        }
     }
 
     protected TextView createTextView(String s) {

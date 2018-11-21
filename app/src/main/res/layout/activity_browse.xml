@@ -1,35 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".BrowseActivity">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:baselineAligned="false">
-        <Button
+        android:layout_height="wrap_content">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:text="Sell a book"
-            android:onClick="sellBook"
-            android:background="@color/primaryComplement"/>
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="50dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/browse_wrapper"
-                android:orientation="vertical">
-            </LinearLayout>
-        </ScrollView>
+            android:id="@+id/browse_wrapper"
+            android:orientation="vertical">
+        </LinearLayout>
+    </ScrollView>
 
-    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

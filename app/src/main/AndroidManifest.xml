@@ -20,7 +20,8 @@
         <activity android:name=".SignupActivity" />
         <activity android:name=".BrowseActivity" />
         <activity android:name=".InventoryActivity" />
-        <activity android:name=".SellActivity"></activity>
+        <activity android:name=".SellActivity" />
+        <activity android:name=".ProfileActivity"></activity>
     </application>
 
 </manifest>
