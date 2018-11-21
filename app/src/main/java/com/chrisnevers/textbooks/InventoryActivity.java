@@ -1,6 +1,7 @@
 package com.chrisnevers.textbooks;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -63,7 +64,8 @@ public class InventoryActivity extends AppCompatActivity {
 
                                 Button btn = new Button(getApplicationContext());
                                 btn.setText("Buy");
-                                setOnClick(btn, document.getData().get("seller").toString());
+                                setOnClick(btn, document.getData().get("seller").toString(), document.getData().get("condition").toString(),
+                                        document.getData().get("price").toString(), isbn);
 
                                 priceTV.append("\n");
 
@@ -99,16 +101,33 @@ public class InventoryActivity extends AppCompatActivity {
         tv.setLayoutParams(params);
         return tv;
     }
-    private void setOnClick(final Button btn, final String email){
+
+    private void setOnClick(final Button btn, final String email, final String condition, final String price, final String isbn){
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(getApplicationContext(), InventoryActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                myIntent.putExtra("email", email);
-                startActivity(myIntent);
+                Intent myIntent = new Intent(Intent.ACTION_SENDTO);
+                String message = createEmail(email, condition, price);
+                myIntent.setData(Uri.parse("mailto:"));
+                myIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
+                myIntent.putExtra(Intent.EXTRA_SUBJECT, isbn);
+                myIntent.putExtra(Intent.EXTRA_TEXT, message);
+
+               if (myIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(myIntent);
+               }
+
             }
         });
     }
+
+    private String createEmail(final String email, final String condition, final String price){
+        String message = email;
+        message += "\n" + condition;
+        message += "\n" + price;
+        return message;
+    }
+
 
 }
 
