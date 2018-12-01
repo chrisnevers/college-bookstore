@@ -1,5 +1,6 @@
 package com.chrisnevers.textbooks;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -107,11 +108,11 @@ public class SellActivity extends AppCompatActivity {
                     // Construct record to store in user's postings database
                     HashMap<String, Object> sellerField = new HashMap<>();
                     sellerField.put("id", copyId);
+                    sellerField.put("isbn", isbn);
 
                     // Save the id of the individual copy to the seller's profile
                     db.collection("postings").document(sellerEmail)
-                    .collection("postings").document(isbn)
-                    .collection("copies").add(sellerField)
+                    .collection("postings").add(sellerField)
                     .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
@@ -127,5 +128,11 @@ public class SellActivity extends AppCompatActivity {
                 }
             }
         });
+        goToBrowseActivity();
+    }
+
+    protected void goToBrowseActivity () {
+        Intent myIntent = new Intent(getApplicationContext(), BrowseActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(myIntent);
     }
 }
