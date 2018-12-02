@@ -13,64 +13,70 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="25dp"
-            android:paddingBottom="15dp"
-            android:text="Sell a book"/>
-        <TextView
+            android:textSize="32dp"
+            android:background="@color/grey"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:paddingVertical="20dp"
+            android:text="@string/sell_book"
+            android:layout_marginBottom="10dp"/>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Textbook Name"/>
-        <EditText
-            android:id="@+id/textbookName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="How to rob an ese"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Author Name"/>
-        <EditText
-            android:id="@+id/authorName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Christ Mevers"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ISBN"/>
-        <EditText
-            android:id="@+id/isbn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="ISBN"
-            android:text="12345"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Condition"/>
-        <RatingBar
-            android:id="@+id/condition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:numStars="5"
-            android:stepSize=".5" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Price (in dollars)"/>
-        <EditText
-            android:id="@+id/price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:text="25.50"/>
-        <Button
-            android:id="@+id/sellBook"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/primaryComplement"
-            android:onClick="sellBook"
-            android:text="Sell!"/>
+            android:paddingHorizontal="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Textbook Name"/>
+            <EditText
+                android:id="@+id/textbookName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Author Name"/>
+            <EditText
+                android:id="@+id/authorName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ISBN"/>
+            <EditText
+                android:id="@+id/isbn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="ISBN"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Condition"/>
+            <RatingBar
+                android:id="@+id/condition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:stepSize=".5" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Price (in dollars)"/>
+            <EditText
+                android:id="@+id/price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"/>
+            <Button
+                android:id="@+id/sellBook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/primaryComplement"
+                android:onClick="sellBook"
+                android:text="Sell!"/>
+        </LinearLayout>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

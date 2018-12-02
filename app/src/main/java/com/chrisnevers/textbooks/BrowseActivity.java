@@ -1,6 +1,8 @@
 package com.chrisnevers.textbooks;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
@@ -14,7 +16,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +30,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Text;
 
+import static android.view.Gravity.CENTER_VERTICAL;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class BrowseActivity extends AppCompatActivity {
 
@@ -53,35 +59,61 @@ public class BrowseActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         LinearLayout wrapper = (LinearLayout) findViewById(R.id.browse_wrapper);
                         if (task.isSuccessful()) {
-                            for (int i = 0; i < 10; i++) {
-                                for (DocumentSnapshot document : task.getResult()) {
-                                    LinearLayout bookL = new LinearLayout(getApplicationContext());
-                                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.FILL_PARENT);
-                                    params.setMargins(0,0,0,200);
-                                    bookL.setLayoutParams(params);
-                                    bookL.setOrientation(LinearLayout.VERTICAL);
+                            for (DocumentSnapshot document : task.getResult()) {
 
-                                    final String isbn = document.getId();
-                                    TextView isbnTV = createISPN(isbn);
-                                    TextView authorTV = createAuthorView(document.getData().get("author").toString());
-                                    TextView nameTV = createTextView(document.getData().get("name").toString());
+                                // Create wrapper for one listing, and style appropriately
+                                LinearLayout bookWrap = new LinearLayout(getApplicationContext());
+                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
+                                params.setMargins(0, 100, 0, 0);
+                                bookWrap.setLayoutParams(params);
+                                bookWrap.setOrientation(LinearLayout.VERTICAL);
 
-                                    Button btn = new Button(getApplicationContext());
-                                    btn.setText("Buy Now");
-                                    btn.setBackgroundColor(getResources().getColor(R.color.primaryComplement));
-                                    ViewGroup.LayoutParams params2 = new ViewGroup.LayoutParams(400, ViewGroup.LayoutParams.WRAP_CONTENT);
-                                    btn.setLayoutParams(params2);
-                                    setOnClick(btn, isbn);
+                                // Vertically align the book img and text
+                                LinearLayout iconTextWrap = new LinearLayout(getApplicationContext());
+                                iconTextWrap.setGravity(CENTER_VERTICAL);
 
-                                    nameTV.setTextSize(25);
-                                    nameTV.setTypeface(Typeface.DEFAULT_BOLD);
+                                // Get current isbn
+                                final String isbn = document.getId();
 
-                                    bookL.addView(nameTV);
-                                    bookL.addView(authorTV);
-                                    bookL.addView(isbnTV);
-                                    bookL.addView(btn);
-                                    wrapper.addView(bookL);
-                                }
+                                // Create text views
+                                TextView isbnTV = createISPN(isbn);
+                                TextView authorTV = createAuthorView(document.getData().get("author").toString());
+                                TextView nameTV = createTextView(document.getData().get("name").toString());
+
+                                // Create buy now button
+                                Button btn = new Button(getApplicationContext());
+                                btn.setText("Buy Now");
+                                btn.setBackgroundColor(getResources().getColor(R.color.primaryComplement));
+                                setOnClick(btn, isbn);
+
+                                // Style book name text
+                                nameTV.setTextSize(24);
+                                nameTV.setTypeface(Typeface.DEFAULT_BOLD);
+
+                                // Create img
+                                ImageView img = new ImageView(getApplicationContext());
+                                Bitmap bmap = BitmapFactory.decodeResource(getResources(), R.drawable.book);
+                                Bitmap scaled = Bitmap.createScaledBitmap(bmap, 200, 250, true);
+                                img.setImageBitmap(scaled);
+
+                                // Wrap all text views in linear layout and add margins against book
+                                LinearLayout textWrap = new LinearLayout(getApplicationContext());
+                                LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams (WRAP_CONTENT, WRAP_CONTENT);
+                                textParams.setMargins(50, 0, 0, 20);
+                                textWrap.setOrientation(LinearLayout.VERTICAL);
+                                textWrap.setLayoutParams(textParams);
+
+                                // Add all views to the listing wrapper
+                                iconTextWrap.addView(img);
+                                textWrap.addView(nameTV);
+                                textWrap.addView(authorTV);
+                                textWrap.addView(isbnTV);
+                                iconTextWrap.addView(textWrap);
+                                bookWrap.addView(iconTextWrap);
+                                bookWrap.addView(btn);
+
+                                // Add listing wrapper to global wrapper
+                                wrapper.addView(bookWrap);
                             }
                         } else {
                             TextView tv = new TextView(getApplicationContext());
@@ -100,7 +132,6 @@ public class BrowseActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Toast.makeText(this, "Selected Item: " +item.getTitle(), Toast.LENGTH_SHORT).show();
         switch (item.getItemId()) {
             case R.id.goto_profile: {
                 Intent myIntent = new Intent(getApplicationContext(), ProfileActivity.class)

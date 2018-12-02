@@ -7,4 +7,5 @@
     <color name="bookColor">#98d3ff</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#b89cce</color>
+    <color name="grey">#d1d2d2</color>
 </resources>

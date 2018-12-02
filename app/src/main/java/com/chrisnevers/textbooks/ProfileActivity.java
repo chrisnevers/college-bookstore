@@ -1,6 +1,7 @@
 package com.chrisnevers.textbooks;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,8 +49,8 @@ public class ProfileActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     LinearLayout wrapper = (LinearLayout) findViewById(R.id.my_books_wrapper);
                     if (task.getResult().isEmpty()) {
-                        TextView isbnTV = createTextView("empty");
-                        wrapper.addView(isbnTV);
+                        TextView postingInfo = (TextView) findViewById (R.id.postingInfo);
+                        postingInfo.setText("You do not have any postings");
                     } else {
                         for (DocumentSnapshot doc : task.getResult()) {
                             addBookView (wrapper, doc);
@@ -70,17 +71,30 @@ public class ProfileActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
+                        LinearLayout wrap = new LinearLayout(getApplicationContext());
+                        wrap.setOrientation(LinearLayout.VERTICAL);
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        params.setMargins(0, 0, 0, 100);
+                        wrap.setLayoutParams(params);
                         Map<String, Object> result = task.getResult().getData();
                         String author = result.get("author").toString();
+                        TextView authorTV = createTextView("Author: " + author);
                         String txtbook = result.get("name").toString();
-                        TextView authorTV = createTextView(author);
                         TextView txtbookTV = createTextView(txtbook);
-                        TextView isbnTV = createTextView(isbn);
+                        TextView isbnTV = createTextView("ISBN:" + isbn);
+                        txtbookTV.setTextSize(20);
+                        txtbookTV.setTypeface(Typeface.DEFAULT_BOLD);
+                        authorTV.setTextSize(16);
+                        isbnTV.setTextSize(16);
+                        isbnTV.setPadding(0,0,0, 10);
+
                         Button delete = createButton(isbn, postingId, copyId);
-                        wrapper.addView(isbnTV);
-                        wrapper.addView(authorTV);
-                        wrapper.addView(txtbookTV);
-                        wrapper.addView(delete);
+                        wrap.addView(txtbookTV);
+
+                        wrap.addView(authorTV);
+                        wrap.addView(isbnTV);
+                        wrap.addView(delete);
+                        wrapper.addView(wrap);
                     }
                 }
             });
@@ -148,7 +162,11 @@ public class ProfileActivity extends AppCompatActivity {
         TextView nameView = (TextView) findViewById(R.id.user_name);
         TextView emailView = (TextView) findViewById(R.id.email);
         nameView.setText(userName);
+        nameView.setTextSize(36);
+        nameView.setTypeface(Typeface.DEFAULT_BOLD);
         emailView.setText(email);
+        emailView.setTextSize(24);
+        emailView.setTypeface(Typeface.DEFAULT_BOLD);
     }
 
     protected void refresh () {
