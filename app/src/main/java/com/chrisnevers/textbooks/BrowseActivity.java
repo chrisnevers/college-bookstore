@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
@@ -164,8 +165,8 @@ public class BrowseActivity extends AppCompatActivity {
 
     protected TextView createAuthorView(String s) {
         TextView tv = new TextView(getApplicationContext());
-        String author = "Author:  ";
-        tv.setText(author);
+        String author = "<b><i>" + "Author:  " + "</i></b>";
+        tv.setText(Html.fromHtml(author));
         tv.append(s);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.FILL_PARENT);
         params.weight = 1.0f;
@@ -177,7 +178,8 @@ public class BrowseActivity extends AppCompatActivity {
 
     protected TextView createISPN(String s) {
         TextView tv = new TextView(getApplicationContext());
-        tv.setText("ISBN:   ");
+        String isbn = "<b><i>" + "ISBN:   " + "</i></b>";
+        tv.setText(Html.fromHtml(isbn));
         tv.append(s);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.FILL_PARENT);
         params.weight = 1.0f;

@@ -2,4 +2,5 @@
     <string name="app_name">College Bookstore</string>
     <string name="title_activity_browse">BrowseActivity</string>
     <string name="sell_book">Sell A Book</string>
+    <string name="Listing">Listings:</string>
 </resources>
