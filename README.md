@@ -1,3 +1,3 @@
-#CollegeBookStore
+# College Bookstore
 
-#Power to the people 
+# Power to the people
