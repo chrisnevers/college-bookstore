@@ -167,7 +167,7 @@ public class BrowseActivity extends AppCompatActivity {
      * Creates the Buy Now button, stlyes and set's onClick functionality
      * */
     @NonNull
-    private Button getBuyButton(String isbn) {
+    private Button getBuyButton(final String isbn) {
         Button button = new Button(getApplicationContext());
         button.setText("Buy Now");
         button.setBackgroundColor(getResources().getColor(R.color.primaryComplement));

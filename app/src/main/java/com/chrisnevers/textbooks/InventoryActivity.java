@@ -38,11 +38,14 @@ import static android.view.Gravity.RIGHT;
 
 public class InventoryActivity extends AppCompatActivity {
 
+    String _isbn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
         final String isbn = getIntent().getStringExtra("isbn");
+        _isbn = isbn;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("copies").document(isbn).collection("copies")
                 .get()
@@ -57,7 +60,7 @@ public class InventoryActivity extends AppCompatActivity {
                                 String copy = document.getId();
                                 TextView conditionTV = conditionView(document.getData().get("condition").toString());
                                 TextView priceTV = priceView(document.getData().get("price").toString());
-                                TextView sellerTV = nameView(document.getData().get("name").toString());
+                                TextView sellerTV = nameView(document.getData().get("seller").toString());
 
                                 LinearLayout text = new LinearLayout(getApplicationContext());
                                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -69,7 +72,7 @@ public class InventoryActivity extends AppCompatActivity {
                                 Button btn = new Button(getApplicationContext());
                                 btn.setBackgroundColor(getResources().getColor(R.color.primaryComplement));
                                 btn.setText("Buy");
-                                setOnClick(btn, document.getData().get("name").toString(),document.getData().get("seller").toString(), document.getData().get("condition").toString(),
+                                setOnClick(btn, document.getData().get("seller").toString(), document.getData().get("seller").toString(), document.getData().get("condition").toString(),
                                         document.getData().get("price").toString(), isbn);
 
                                 LinearLayout iconTextWrap = new LinearLayout(getApplicationContext());
@@ -158,7 +161,7 @@ public class InventoryActivity extends AppCompatActivity {
         return tv;
     }
 
-    private void setOnClick(final Button btn, final String name,final String email, final String condition, final String price, final String isbn){
+    private void setOnClick(final Button btn, final String name, final String email, final String condition, final String price, final String isbn){
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,9 +181,8 @@ public class InventoryActivity extends AppCompatActivity {
     }
 
     private String createEmail(final String email, final String condition, final String price){
-        String message = email;
-        message += "\n" + condition;
-        message += "\n" + price;
+        String message = "Hello, I saw your posting on College Bookstore. I would like to buy" +
+                " your copy of " + _isbn + " for " + price + "\n\nThanks";
         return message;
     }
 
