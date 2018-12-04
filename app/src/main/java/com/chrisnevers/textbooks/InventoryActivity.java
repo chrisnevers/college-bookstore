@@ -31,12 +31,20 @@ public class InventoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
 
-        // Get the isbn of the current book
+        /**
+         *Receive ISBN Browse section and save it to a string
+         * */
         final String isbn = getIntent().getStringExtra("isbn");
         _isbn = isbn;
 
-        // Connect to Firebase
+        /**
+         * Connect to Firebase
+         */
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        /**
+         * Set a collection path that retrieves copies of the of the book by ISBN
+         */
         db.collection("copies")
             .document(isbn)
             .collection("copies")
@@ -48,6 +56,10 @@ public class InventoryActivity extends AppCompatActivity {
 
                     if(task.isSuccessful()){
                         for(DocumentSnapshot document : task.getResult()) {
+
+                            /**
+                             * Render the available copies of the books
+                             */
                             final String condition = document.getData().get("condition").toString();
                             final String price = document.getData().get("price").toString();
                             final String seller = document.getData().get("seller").toString();
@@ -91,6 +103,10 @@ public class InventoryActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *Set  the copy of books layout and style then return
+     */
+
     @NonNull
     private LinearLayout getCopyLayout() {
         LinearLayout book = new LinearLayout(getApplicationContext());
@@ -102,6 +118,10 @@ public class InventoryActivity extends AppCompatActivity {
         return book;
     }
 
+    /**
+     Set the button functionality on click
+     */
+
     @NonNull
     private Button getButton(String condition, String price, String seller) {
         Button btn = new Button(getApplicationContext());
@@ -111,6 +131,9 @@ public class InventoryActivity extends AppCompatActivity {
         return btn;
     }
 
+    /**
+     *Get the image of book and set the size and style
+     */
     @NonNull
     private ImageView getImageView() {
         ImageView img = new ImageView(getApplicationContext());
@@ -119,6 +142,10 @@ public class InventoryActivity extends AppCompatActivity {
         img.setImageBitmap(scaled);
         return img;
     }
+
+    /**
+     *Set the Linear Layout for the text
+     */
 
     @NonNull
     private LinearLayout getLinearLayout() {
@@ -130,12 +157,20 @@ public class InventoryActivity extends AppCompatActivity {
         return text;
     }
 
+    /**
+     *String is stored into a created textview; String consists book information
+     */
+
     protected TextView createTextView(String s) {
         TextView tv = new TextView(getApplicationContext());
         tv.setTextSize(18);
         tv.setText(Html.fromHtml(s));
         return tv;
     }
+
+    /**
+     *Set button to call onClick function when clicked on
+     */
 
     private void setOnClick(final Button btn, final String email, final String condition, final String price){
         btn.setOnClickListener(new View.OnClickListener() {
@@ -145,6 +180,13 @@ public class InventoryActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     *Get the condition, price, and sellers email address on click. Once gathered,
+     *open up phone default mail app and insert sellers email address,  a want to buy
+     * message and a messege of the books condition isbn,condition, and price all in the
+     * correct fields.
+     */
 
     private void createEmail(String condition, String price, String email) {
         Intent myIntent = new Intent(Intent.ACTION_SENDTO);
@@ -160,6 +202,10 @@ public class InventoryActivity extends AppCompatActivity {
              startActivity(myIntent);
         }
     }
+
+    /**
+     *Default message that has books isbn, price and condition.
+     */
 
     private String createEmailMsg(final String condition, final String price){
         String message = "Hello, I saw your posting on College Bookstore. I would like to buy" +

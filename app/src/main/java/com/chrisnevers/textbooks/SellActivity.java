@@ -41,7 +41,9 @@ public class SellActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sell);
 
-        // Initialize layout views
+        /**
+         * Create layouts for text view
+         */
         textbookView = findViewById(R.id.textbookName);
         authorView = findViewById(R.id.authorName);
         isbnView = findViewById(R.id.isbn);
@@ -49,32 +51,44 @@ public class SellActivity extends AppCompatActivity {
         priceView = findViewById(R.id.price);
         submit = findViewById(R.id.sellBook);
 
-        // Set up firebase connection
         db = FirebaseFirestore.getInstance();
 
-        // Get current user
+        /**
+         * Connect to Firebase and set the current user as the seller
+         */
         FirebaseAuth auth = FirebaseAuth.getInstance();
         sellerEmail = auth.getCurrentUser().getEmail();
     }
 
+    /**
+     *Function that sells the book tied to the user
+     */
     public void sellBook (View v) {
 
-        // Disable button to prevent multiple postings
+        /**
+         * Disable button to prevent multiple postings
+         */
         submit.setEnabled(false);
 
-        // Get form data
+        /**
+         * Get the form data and set to a string
+         */
         final String textbookName = textbookView.getText().toString();
         final String authorName = authorView.getText().toString();
         final String isbn = isbnView.getText().toString();
         final Float condition = conditionView.getRating();
         final String price = priceView.getText().toString();
 
-        // Construct record to put in textbook database
+        /**
+         * Setting up data to be put into the database
+         */
         HashMap<String, Object> textbookFields = new HashMap<>();
         textbookFields.put("author", authorName);
         textbookFields.put("name", textbookName);
 
-        // Store textbook in database
+        /**
+         * Set collection and store textbook into database
+         */
         db.collection("textbooks").document(isbn)
         .set(textbookFields)
         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -87,13 +101,17 @@ public class SellActivity extends AppCompatActivity {
             }
         });
 
-        // Construct record to put in copies database
+        /**
+         * Create a record that saves the amount of copies of book
+         */
         HashMap<String, Object> copiesField = new HashMap<>();
         copiesField.put("condition", Float.toString(condition));
         copiesField.put("price", price);
         copiesField.put("seller", sellerEmail);
 
-        // Store the individual copy in database
+        /**
+         * Store individual copy into database
+         */
         db.collection("copies").document(isbn)
         .collection("copies")
         .add(copiesField)
@@ -102,15 +120,21 @@ public class SellActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 if (task.isSuccessful()) {
 
-                    // Store id of document we created
+                    /**
+                     * Store ID
+                     */
                     String copyId = task.getResult().getId();
 
-                    // Construct record to store in user's postings database
+                    /**
+                     * Construct record to store users listings
+                     */
                     HashMap<String, Object> sellerField = new HashMap<>();
                     sellerField.put("id", copyId);
                     sellerField.put("isbn", isbn);
 
-                    // Save the id of the individual copy to the seller's profile
+                    /**
+                     * Saves ID of users copy of book for deletions purposes later
+                     */
                     db.collection("postings").document(sellerEmail)
                     .collection("postings").add(sellerField)
                     .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
@@ -130,6 +154,10 @@ public class SellActivity extends AppCompatActivity {
         });
         goToBrowseActivity();
     }
+
+    /**
+     * Go to Browse activity book was sold
+     */
 
     protected void goToBrowseActivity () {
         Intent myIntent = new Intent(getApplicationContext(), BrowseActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
